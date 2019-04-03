@@ -15,14 +15,14 @@
   * dimensions (These represent the character's size in the video game)
   * destroy() // prototype method that returns: `${this.name} was removed from the game.`
 */
-  function Gameobject(createdAt, name, dimensions) {
-    this.createdAt = createdAt
-    this.name = name
-    this.dimensions = dimensions
+  function Gameobject(information) {
+    this.createdAt = information.createdAt;
+    this.name = information.name;
+    this.dimensions = information.dimensions;
   }
 
-  Gameobject.prototype.destroy = function () {
-     return `${this.name} was removed from the game.`
+  Gameobject.prototype.destroy = function() {
+     return `${this.name} was removed from the game.`;
   }
 /*
   === CharacterStats ===
@@ -30,14 +30,16 @@
   * takeDamage() // prototype method -> returns the string '<object name> took damage.'
   * should inherit destroy() from GameObject's prototype
 */
-CharacterStats.prototype = Object.create(Gameobject.prototype)
 
-function CharacterStats(healthPoints) {
-  this.healthPoints = healthPoints
+function CharacterStats(character) {
+  Gameobject.call(this, character)
+  this.healthPoints = character.healthPoints;
 }
 
-CharacterStats.prototype.takeDamage = function () {
-  return `${this.CharacterStats} took damage.`
+CharacterStats.prototype = Object.create(Gameobject.prototype);
+
+CharacterStats.prototype.takeDamage = function() {
+  return `${this.name} took damage.`;
 }
 
 /*
@@ -49,16 +51,18 @@ CharacterStats.prototype.takeDamage = function () {
   * should inherit destroy() from GameObject through CharacterStats
   * should inherit takeDamage() from CharacterStats
 */
- Humanoid.prototype = Object.create(CharacterStats)
-
- function Humanoid(team, weapons, language) {
-   this.team = team 
-   this.weapons = weapons
-   this.language = language 
+ 
+ function Humanoid(stats) {
+  //  Gameobject.call(this, destroy)
+   CharacterStats.call(this, stats);
+   this.team = stats.team;
+   this.weapons = stats.weapons;
+   this.language = stats.language;
  }
+Humanoid.prototype = Object.create(CharacterStats.prototype)
 
-Humanoid.prototype.great = function (){
-  return `${this.Humanoid} offers a greeting is ${this.language}`
+Humanoid.prototype.greet = function (){
+  return `${this.name} offers a greeting is ${this.language}`;
 }
 /*
   * Inheritance chain: GameObject -> CharacterStats -> Humanoid
@@ -118,17 +122,17 @@ Humanoid.prototype.great = function (){
     ],
     language: 'Elvish',
   });
-
+  console.log(mage);
   console.log(mage.createdAt); // Today's date
-  // console.log(archer.dimensions); // { length: 1, width: 2, height: 4 }
-  // console.log(swordsman.healthPoints); // 15
-  // console.log(mage.name); // Bruce
-  // console.log(swordsman.team); // The Round Table
-  // console.log(mage.weapons); // Staff of Shamalama
-  // console.log(archer.language); // Elvish
-  // console.log(archer.greet()); // Lilith offers a greeting in Elvish.
-  // console.log(mage.takeDamage()); // Bruce took damage.
-  // console.log(swordsman.destroy()); // Sir Mustachio was removed from the game.
+  console.log(archer.dimensions); // { length: 1, width: 2, height: 4 }
+  console.log(swordsman.healthPoints); // 15
+  console.log(mage.name); // Bruce
+  console.log(swordsman.team);  // The Round Table
+  console.log(mage.weapons); // Staff of Shamalama
+  console.log(archer.language); // Elvish
+  console.log(archer.greet()); // Lilith offers a greeting in Elvish.
+  console.log(mage.takeDamage()); // Bruce took damage.
+  console.log(swordsman.destroy()); // Sir Mustachio was removed from the game.
 
 
   // Stretch task: 
